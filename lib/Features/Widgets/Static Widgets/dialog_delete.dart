@@ -1,0 +1,138 @@
+import 'package:belahodod/Core/constant/colors_constant.dart';
+import 'package:belahodod/Core/utils/shared_preference_utils.dart';
+import 'package:flutter/material.dart';
+
+// ignore: must_be_immutable
+class DeleteDialog extends StatelessWidget {
+  String title;
+  String subTitle;
+  String button1;
+  String button2;
+  VoidCallback ontapButton1;
+  VoidCallback ontapButton2;
+  DeleteDialog({
+    required this.title,
+    required this.subTitle,
+    required this.button1,
+    required this.button2,
+    required this.ontapButton1,
+    required this.ontapButton2,
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      child: Container(
+        width: MediaQuery.of(context).size.width * 0.9,
+        height: MediaQuery.of(context).size.height * 0.17,
+        decoration: BoxDecoration(
+          color: SharedPreferencesUtils().getisDark() == false
+              ? Colors.white
+              : Colors.grey.shade900,
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.only(top: 12),
+          child: Column(
+            children: [
+              Text(
+                title,
+                textDirection: TextDirection.rtl,
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: SharedPreferencesUtils().getisDark() == false
+                      ? Colors.black
+                      : Colors.white,
+                ),
+              ),
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.003,
+              ),
+              Padding(
+                padding: const EdgeInsets.only(right: 16),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Text(
+                      subTitle,
+                      textDirection: TextDirection.rtl,
+                      maxLines: 3,
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: SharedPreferencesUtils().getisDark() == false
+                            ? Colors.grey.shade900
+                            : Colors.white,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.02,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    width: MediaQuery.of(context).size.width * 0.25,
+                    height: MediaQuery.of(context).size.height * 0.05,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      color: ColorConstant.mainColor,
+                    ),
+                    child: InkWell(
+                      overlayColor: WidgetStateProperty.all(Colors.transparent),
+                      onTap: ontapButton1,
+                      child: Center(
+                        child: Text(
+                          button1,
+                          style: const TextStyle(
+                            fontSize: 16,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.08,
+                  ),
+                  Container(
+                    width: MediaQuery.of(context).size.width * 0.25,
+                    height: MediaQuery.of(context).size.height * 0.05,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      color: SharedPreferencesUtils().getisDark() == false
+                          ? ColorConstant.darkColor
+                          : Colors.white,
+                    ),
+                    child: InkWell(
+                      overlayColor: WidgetStateProperty.all(Colors.transparent),
+                      onTap: ontapButton2,
+                      child: Center(
+                        child: Text(
+                          button2,
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: SharedPreferencesUtils().getisDark() == false
+                                ? Colors.white
+                                : Colors.grey.shade900,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}

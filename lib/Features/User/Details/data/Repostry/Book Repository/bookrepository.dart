@@ -1,0 +1,35 @@
+import 'package:belahodod/Core/Network/network_info.dart';
+import 'package:belahodod/Core/error/network_exceptions.dart';
+import 'package:belahodod/Features/User/Details/data/Model/bookentity.dart';
+import 'package:belahodod/Features/User/Details/data/Repostry/Book%20Repository/baserepositorybook.dart';
+import 'package:belahodod/Features/User/Details/data/Web%20Service/book_webservice.dart';
+import 'package:dartz/dartz.dart';
+import 'package:injectable/injectable.dart';
+
+@Singleton(as: BaseRepositoryBook)
+class Bookrepository implements BaseRepositoryBook {
+  final NetworkInfo _networkInfo;
+  final BookWebService _bookWebService;
+
+  Bookrepository(
+      {required NetworkInfo networkInfo,
+      required BookWebService bookWebService})
+      : _networkInfo = networkInfo,
+        _bookWebService = bookWebService;
+
+  @override
+  Future<Either<NetworkExceptions, BookEntity>> bookDetails(
+      int productID) async {
+    if (await _networkInfo.isConnected) {
+      try {
+        final response = await _bookWebService.bookDetails(productID);
+
+        return Right(response);
+      } catch (e) {
+        return Left(NetworkExceptions.getException(e));
+      }
+    } else {
+      return const Left(NetworkExceptions.noInternetConnection());
+    }
+  }
+}
